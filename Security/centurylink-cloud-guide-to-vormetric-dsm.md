@@ -1,6 +1,6 @@
 {{{
   "title": "CenturyLink Cloud Guide to Vormetric DSM",
-  "date": "1-18-2015",
+  "date": "06-09-2017",
   "author": "Chris Little",
   "attachments": [],
   "contentIsHTML": false,
@@ -29,11 +29,11 @@
 * [Server Backup and Recovery](#server-backup-and-recovery)
 
 ### Vormetric DSM Overview
-Vormetric provides enterprise encryption and key management services that enable corporations to protect their data. Vormetric addresses industry compliance mandates and government regulations globally by securing data in physical, virtual and cloud infrastructures, through Data Encryption, Key Management, Access Policies, Privileged User Control, and Security Intelligence.  Customers should refer to our [Getting Started with Vormetric DSM](../Ecosystem Partners/Marketplace Guides/getting-started-with-vormetric-dsm.md) knowledge-base article for more information.  
+Vormetric provides enterprise encryption and key management services that enable corporations to protect their data. Vormetric addresses industry compliance mandates and government regulations globally by securing data in physical, virtual and cloud infrastructures, through Data Encryption, Key Management, Access Policies, Privileged User Control, and Security Intelligence.  Customers should refer to our [Getting Started with Vormetric Data Security Manager](../Marketplace/Getting Started Guides/getting-started-vormetric-data-security-manager.md) knowledge-base article for more information.
 
 ### Prerequisites
 * A CenturyLink Cloud Account
-* Vormetric DSM Licenses  
+* Vormetric DSM Licenses
 * Vormetric DSM Deployed into your account in a [dedicated network vlan](../Network/creating-and-deleting-vlans.md).  Customers leveraging an account hierachy are advised to place the DSM in the parent account as multi-tenant capabilities of the DSM allow for logical separation of policies, key, security administrators.
 
 ### General Notes
@@ -43,7 +43,7 @@ Vormetric provides enterprise encryption and key management services that enable
 DNS resolution is crucial to a successful implementation as all communications between the DSM and every agent and between the DSM and failover DSM units relies on DNS resolution. Ensure assigned hostnames and DNS records exists for DSMs and server systems in all associated DNS servers and that the fully qualified domain name for the DSM's and server systems are entered in the DSM units and servers systems during the Vormetric setup and/or configuration. **DNS names are case sensitive so it is imperative this is taken into account when registering hosts and configuring DNS services.**
 
 ### Network Connectivity
-Customers are encouraged to place their DSM in a secure isolated vlan on the CenturyLink Cloud.  This provides maximum security and control of inbound and outbound TCP and UDP ports used in the delivery of encryption services.  
+Customers are encouraged to place their DSM in a secure isolated vlan on the CenturyLink Cloud.  This provides maximum security and control of inbound and outbound TCP and UDP ports used in the delivery of encryption services.
 
 ![Network Overview](../images/centuryLink-cloud-guide-to-vormetric-DSM-03.png)
 
@@ -71,7 +71,7 @@ New-NetFirewallRule -DisplayName â€œVormetric DSM to Agent" -Direction Inbound â
 
 ### Data Security Manager Configuration
 
-1. Use the [Getting Started with Vormetric DSM](../Ecosystem Partners/Marketplace Guides/getting-started-with-vormetric-dsm.md) guide to deploy your DSM Appliance into a CenturyLink Cloud Data Center.  
+1. Use the [Getting Started with Vormetric DSM](../Marketplace/Getting Started Guides/getting-started-vormetric-data-security-manager.md) guide to deploy your DSM Appliance into a CenturyLink Cloud Data Center.
 
 2. Connect securely via [IPSEC](../Network/creating-a-self-service-ipsec-site-to-site-vpn-tunnel.md) or [Client VPN](../Network/how-to-configure-client-vpn.md) and use SSH to login as **cliadmin**.   TIP: Per the Getting Started Guide the default password is **Vormetric123$** and it is advised you modify this as shown later in this KB.
 
@@ -202,7 +202,7 @@ Decentralized management with business or product owners of practice areas defin
 ### Host Agent Installation
 CenturyLink Cloud customers should leverage our automated blueprint engine to deploy Host Agents across their account hierachy.  The orchestration software makes it easy for users to deploy solutions, reducing operational support costs and speeding time to implementation.
 
-* [Deploy Vormetric Host Agent](../Ecosystem Partners/Marketplace Guides/getting-started-with-vormetric-encryption-agent-deployment-blueprints.md)
+* [Deploy Vormetric Host Agent](//www.ctl.io/marketplace/partner/VRSJ/product/Vormetric%20Encryption%20Agent)
 * [Video Tutorial](//vimeo.com/136635748)
 
 ### Creating Encryption Keys
@@ -335,7 +335,7 @@ VTE provides three encryption methods to encrypt existing data: the Copy, Restor
 
 1. [Create a dataxform policy for the GuardPoint on this directory.](//vimeo.com/136635755)
 
-2. Use the dataxform tool to estimate the time required for encryption.  Make sure to disable all read/write access to the Guardpoint you wish to estimate a time to encrypt.  
+2. Use the dataxform tool to estimate the time required for encryption.  Make sure to disable all read/write access to the Guardpoint you wish to estimate a time to encrypt.
 
     ```
     dataxform --deep_scan --print_stat --gp <path>
@@ -517,15 +517,15 @@ Set up the Automatic Backup feature to protect the configuration settings as wel
     ![automatic backup files list](../images/centuryLink-cloud-guide-to-vormetric-DSM-15.png)
 
 ### Server Backup and Recovery
-CenturyLink Cloud customers, depending on their technical requirements, implement various backup and recovery solutions.  Both the backup and restoration of encrypted data sets are handled differently depending on the solution put in place.  
+CenturyLink Cloud customers, depending on their technical requirements, implement various backup and recovery solutions.  Both the backup and restoration of encrypted data sets are handled differently depending on the solution put in place.
 
 **Backup Method**|**Approach**
 -----------------|------------
-[Standard Virtual Server](../Servers/centurylink-cloud-backup-and-recovery-services.md)|Standard Virtual Servers include either a 5 or 14 day daily virtual server backup of the entire instance. Using this service with encrypted data sets should be transparent during a backup or virtual server restore action as the entire virtual server is impacted.  Host agents will communicate with the Vormetric DSM and receive the same policy with key access even if you restore a virtual server to a previous state.  
+[Standard Virtual Server](../Servers/centurylink-cloud-backup-and-recovery-services.md)|Standard Virtual Servers include either a 5 or 14 day daily virtual server backup of the entire instance. Using this service with encrypted data sets should be transparent during a backup or virtual server restore action as the entire virtual server is impacted.  Host agents will communicate with the Vormetric DSM and receive the same policy with key access even if you restore a virtual server to a previous state.
 [Simple Backup Service](//www.ctl.io/simple-backup-service)|The Simple Backup Service leverages a client agent to backup and restore data to the server.  As such as part of policy creation a security rule must be put in place that **permits** the backup agent executable **read/write** to the Guardpoint.  Agent based backups are the only situation in which a security rule should permit read/write to a Guardpoint.  Its important to note that should you restore data, using the agent, to a location outside the Guardpoint policy configuration changes will be required in order to permit access to this new location and apply the encryption key. An example policy that includes a security rule for a backup agent can be seen below.
 [Managed Backup](//www.ctl.io/managed-services/backup)|Managed Backup services leverage client agents similar to Simple Backup Services.  As such the rules and approach would mirror the process already detailed.
 [Ecosystem](../Ecosystem Partners/General/ecosystem-partner-list.md)|3rd Party Ecosystem partners such as [Commvault](../Ecosystem Partners/Marketplace Guides/getting-started-with-commvault-storage-blueprint.md) generally leverage client agents similar to Managed Backup services.  As such the rules and approach would mirror the process already detailed.
-[Snapshots](../Servers/creating-and-managing-server-snapshots.md)|While technically a snapshot is not a backup it does facilitate the restoration of an entire virtual server to a previous state.  Using this service with encrypted data sets should be transparent during a snapshot or revert snapshot action as the entire virtual server is impacted.  Host agents will communicate with the Vormetric DSM and receive the same policy with key access even if you revert a snapshot to a previous state.  
+[Snapshots](../Servers/creating-and-managing-server-snapshots.md)|While technically a snapshot is not a backup it does facilitate the restoration of an entire virtual server to a previous state.  Using this service with encrypted data sets should be transparent during a snapshot or revert snapshot action as the entire virtual server is impacted.  Host agents will communicate with the Vormetric DSM and receive the same policy with key access even if you revert a snapshot to a previous state.
 
 **Example Unstructured Data Policy**
 
